@@ -1,0 +1,12 @@
+node_modules/
+.idea/
+
+*.7z
+*.zip
+ 
+*.log
+ 
+.Trashes
+Thumbs.db
+
+
