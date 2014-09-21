@@ -1,0 +1,23 @@
+<ul bindonce class="list-group">
+    <li class="list-group-item media" data-ng-repeat="feed in feeds">
+
+            <a class="pull-left" bo-href="'#/feed/'+feed.id+'/articles'">
+                <img class="media-object" bo-src="feed.faviconLink" alt="favicon">
+            </a>
+        <!--<a data-ng-href="#/feed/{{feed.id}}/articles">-->
+            <div class="media-body">
+                <h4 class="media-heading" bo-bind="feed.title"></h4>
+
+                <div>
+                    date published: <span bo-bind="feed.added * 1000 | date:'MM/dd/yyyy \'at\' h:mma'"></span>
+                </div>
+                <div>
+                    unread: <span class="badge" bo-bind="feed.unreadCount"></span>
+                </div>
+
+            </div>
+        <!--</a>-->
+    </li>
+</ul>
+
+<br/>

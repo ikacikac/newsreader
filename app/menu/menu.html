@@ -1,0 +1,24 @@
+<div id="menuleft" data-ng-class="{hidee:!toShow.menu, slide:toShow.menu}">
+    <div class="container-fluid">
+        <div class="hidden-xs">
+            <h2>Menu</h2>
+            <ul class="nav nav-pills nav-stacked">
+                <li><a data-ng-href="/#/articles/all">All articles</a></li>
+                <li><a data-ng-href="#/articles/star">Starred articles</a></li>
+                <li><a data-ng-href="#/folders">Folders</a></li>
+                <li><a data-ng-href="#/feeds">Feeds</a></li>
+                <li><a data-ng-click="hideMenu()">Hide menu</a></li>
+            </ul>
+        </div>
+
+        <div class="visible-xs-block">
+            <ul class="nav nav-pills nav-stacked nav-justified">
+                <li><a data-ng-href="#/articles/all">All</a></li>
+                <li><a data-ng-href="#/articles/star">Starred</a></li>
+                <li><a data-ng-href="#/folders">Folders</a></li>
+                <li><a data-ng-href="#/feeds">Feeds</a></li>
+                <li><a data-ng-click="hideMenu()">Hide</a></li>
+            </ul>
+        </div>
+    </div>
+</div>

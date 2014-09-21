@@ -1,0 +1,11 @@
+<ul bindonce class="list-group">
+    <li href="#" class="list-group-item media" data-ng-repeat="folder in folders">
+        <a class="pull-left" bo-href="'#/folder/'+folder.id+'/articles'">
+        <img class="media-object" src="images/folder.png" alt="folder">
+        </a>
+        <div class="media-body">
+        <h4 class="media-heading" bo-bind="folder.name"></h4>
+        </div>
+    </li>
+</ul>
+<br/>

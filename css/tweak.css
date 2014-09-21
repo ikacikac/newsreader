@@ -1,0 +1,161 @@
+/*
+ * The MIT License (MIT)
+ *
+ * Copyright (c) 2014 Ilija Lazarevic
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
+#article.selected {
+    border-left: 5px solid #333333;
+    border-right: 5px solid #333333;
+}
+
+.unread {
+    background-image: url('../images/unread.svg');
+    background-position: top left;
+    background-size: 16px 16px;
+    background-repeat: no-repeat;
+}
+
+.date {
+    font-style: italic;
+    color: #3f3f3f;
+}
+
+.author {
+    font-style: italic;
+    color: #3f3f3f;
+}
+
+.form-dialog {
+    border: 2px solid #577099;
+
+    border-radius: 10px;
+    padding: 20px 30px;
+    color: #577099;
+}
+
+@media (max-width : 768px) {
+
+    img.media-object {
+        height: 32px;
+        width: 32px;
+    }
+}
+
+@media (min-width : 768px) {
+    img.media-object {
+        height: 64px;
+        width: 64px;
+    }
+}
+
+.articlebody  img {
+    display: block;
+    width: 100%  \9;
+    max-width: 100%;
+    height: auto;
+}
+
+
+/*********************************
+ *
+ * THIS IS FOR SLIDING MENU BEGIN
+ *
+ *********************************/
+
+#menuleft {
+    position: fixed;
+    top: 0;
+    height: 100%;
+    z-index: 1000;
+
+    border-right: 1px solid #000;
+    background-color: #3f3f3f;
+    display: block;
+    color:white;
+}
+
+
+#menuleft.slide {
+    left: 0px;
+}
+
+#all {
+    position: relative;
+}
+
+#all.hidee {
+    left: 0px;
+}
+
+.slide, .hidee {
+    transition: left 0.4s ease;
+    -webkit-transition: left 0.4s ease;
+    -moz-transition: left 0.4s ease;
+}
+
+@media (max-width : 768px) {
+    #menuleft {
+        left: -100px;
+        width: 100px;
+    }
+
+    #all.slide {
+        left: 100px;
+    }
+
+}
+
+@media (min-width : 768px) {
+    #menuleft {
+        left: -200px;
+        width: 200px;
+    }
+
+    #all.slide {
+        left: 200px;
+    }
+}
+
+.glyphicon.white {
+    color: white;
+}
+
+/*********************************
+ *
+ * THIS IS FOR SLIDING MENU END
+ *
+ *********************************/
+
+.float-button {
+    position: fixed;
+    bottom: 60px;
+    right: -60px;
+    z-index: 1000;
+    transition: all 0.4s ease;
+    -webkit-transition: all 0.4s ease;
+}
+
+.float-button.show {
+    position: fixed;
+    bottom: 60px;
+    right: 50px;
+}

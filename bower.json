@@ -1,0 +1,31 @@
+{
+  "name": "newsreader",
+  "version": "0.1.0",
+  "authors": [
+    "Ilija Lazarevic <ikac.ikax@gmail.com>"
+  ],
+  "description": "RSS reader",
+  "main": "index.html",
+  "keywords": [
+    "RSS",
+    "feed",
+    "ownCloud"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/ikacikac",
+  "ignore": [
+    "build",
+    "node_modules"
+  ],
+  "dependencies": {
+    "angular-route": "1.2.23",
+    "bootstrap": "~3.2.0",
+    "normalize-css": "~3.0.1",
+    "angular-sanitize": "~1.2.24",
+    "angular-local-storage": "~0.0.7",
+    "angular-bindonce": "~0.3.1",
+    "quick-ngrepeat": "*",
+    "angular-mocks": "~1.2.24",
+    "jquery": "2.1.1"
+  }
+}
