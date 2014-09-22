@@ -27,7 +27,7 @@ angular.module('newsreader', ['ngRoute', 'ngSanitize', 'owncloud', 'pasvaz.bindo
 angular.module('newsreader').config(['$routeProvider', function ($routeProvider) {
     $routeProvider.when('/articles/all', {
         controller:'ArticlesCtrl',
-        templateUrl:'app/articles/articles.html',
+        templateUrl:'partials/articles.html',
         resolve:{
             type:function () {
                 return 'all';
@@ -35,7 +35,7 @@ angular.module('newsreader').config(['$routeProvider', function ($routeProvider)
         }
     }).when('/articles/star', {
         controller:'ArticlesCtrl',
-        templateUrl:'app/articles/articles.html',
+        templateUrl:'partials/articles.html',
         resolve:{
             type:function () {
                 return 'star';
@@ -43,13 +43,13 @@ angular.module('newsreader').config(['$routeProvider', function ($routeProvider)
         }
     }).when('/folders', {
         controller:'FoldersCtrl',
-        templateUrl:'app/folders/folders.html'
+        templateUrl:'partials/folders.html'
     }).when('/feeds', {
         controller:'FeedsCtrl',
-        templateUrl:'app/feeds/feeds.html'
+        templateUrl:'partials/feeds.html'
     }).when('/folder/:id/articles', {
         controller:'ArticlesCtrl',
-        templateUrl:'app/articles/articles.html',
+        templateUrl:'partials/articles.html',
         resolve:{
             type:function () {
                 return 'folder';
@@ -57,7 +57,7 @@ angular.module('newsreader').config(['$routeProvider', function ($routeProvider)
         }
     }).when('/feed/:id/articles', {
         controller:'ArticlesCtrl',
-        templateUrl:'app/articles/articles.html',
+        templateUrl:'partials/articles.html',
         resolve:{
             type:function () {
                 return 'feed';
@@ -65,7 +65,7 @@ angular.module('newsreader').config(['$routeProvider', function ($routeProvider)
         }
     }).when('/login',{
         controller: 'LoginCtrl',
-        templateUrl: 'app/login/login.html'
+        templateUrl: 'partials/login.html'
     })
     .otherwise({
         redirectTo:'/articles/all'

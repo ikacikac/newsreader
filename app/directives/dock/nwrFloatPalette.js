@@ -27,7 +27,7 @@ angular.module('newsreader').directive('nwrFloatPalette', function ($document) {
     return {
         restrict:'A',
         replace:true,
-        templateUrl:'app/directives/dock/palette.html',
+        templateUrl:'partials/palette.html',
         link:function (scope, element, attrs) {
             scope.scrollToTop = function () {
                 var html = angular.element(document.querySelector('html'));

@@ -22,179 +22,359 @@
  * SOFTWARE.
  */
 
-module.exports = function(grunt) {
+module.exports = function (grunt) {
 
-	// load needed modules
-	grunt.loadNpmTasks('grunt-contrib-concat');
-	grunt.loadNpmTasks('grunt-contrib-watch');
-	grunt.loadNpmTasks('grunt-contrib-jshint');
-	grunt.loadNpmTasks('grunt-wrap');
-//	grunt.loadNpmTasks('gruntacular');
-//
-//    grunt.loadNpmTasks('grunt-contrib-clean');
-//    grunt.loadNpmTasks('grunt-contrib-compress');
-//    grunt.loadNpmTasks('grunt-contrib-copy');
+    // load needed modules
+    grunt.loadNpmTasks('grunt-contrib-concat');
+    grunt.loadNpmTasks('grunt-contrib-watch');
+    grunt.loadNpmTasks('grunt-contrib-jshint');
+    grunt.loadNpmTasks('grunt-contrib-copy');
+    grunt.loadNpmTasks('grunt-contrib-clean');
+    grunt.loadNpmTasks('grunt-contrib-uglify');
+    grunt.loadNpmTasks('grunt-preprocess');
+    grunt.loadNpmTasks('grunt-mkdir');
+    grunt.loadNpmTasks('grunt-wrap');
 
+    grunt.initConfig({
+        meta:{
+            pkg:grunt.file.readJSON('package.json'),
+            version:'<%= meta.pkg.version %>',
+            name:'<%= meta.pkg.name %>',
+            build:'build',
+            web:'build/web'
+        },
 
-	grunt.initConfig({
-		meta: {
-			pkg: grunt.file.readJSON('package.json'),
-			version: '<%= meta.pkg.version %>',
-            name: '<%= meta.pkg.name %>',
-			production: 'build/'
-		},
-
-/*
-    Commented out because it is going to be used when building
-    FirefoxOS application
-         */
-//        copy: {
-//            assets: {
-//                files: [
-//                    {
-//                        expand: true,
-//                        cwd: 'www/',
-//                        src: [
-//                            'css/**',
-//                            'images/**',
-//                            'img/**',
-//                            'languages/**',
-//                            'public/**',
-//                            'templates/**',
-//                            'vendor/**',
-//                            'index_ffos.html'
-//                        ],
-//                        dest: 'platforms/firefoxos/assets/'
-//                    },
-//                    {
-//                        expand: true,
-//                        cwd: 'platforms/firefoxos/templates/',
-//                        src: 'manifest.webapp',
-//                        dest: 'platforms/firefoxos/assets/'
-//                    },
-//                    {
-//                        expand: true,
-//                        cwd: 'platforms/firefoxos/templates/',
-//                        src: ['package.manifest','index.html'],
-//                        dest: 'platforms/firefoxos/bin/'
-//                    }
-//                ]
-//            },
-//            archive: {
-//                files: [
-//                    {
-//                        src: '<%= meta.name %>.<%= meta.version %>.zip',
-//                        dest: 'platforms/firefoxos/bin/'
-//                    }
-//                ]
-//            }
-//        },
-//
-//        compress: {
-//            main: {
-//                options: {
-//                    mode: 'zip',
-//                    archive: '<%= meta.name %>.<%= meta.version %>.zip'
-//                },
-//                expand: true,
-//                cwd: 'platforms/firefoxos/assets/',
-//                src: '**',
-//                dest: '/'
-//            }
-//        },
-//
-//        clean: {
-//            firefoxos_assets: ['platforms/firefoxos/assets/','platforms/firefoxos/bin/'],
-//            firefoxos_archive: ['<%= meta.name %>.<%= meta.version %>.zip']
-//        },
-
-		concat: {
-			options: {
-				// remove license headers
-				stripBanners: true,
-				banner: '/**\n' +
-				' * Copyright (c) 2014, Ilija Lazarevic ' +
-				'<ikac.ikax@gmail.com> \n' +
-				' * This file is licensed under the MIT Licence\n' +
-				' * See the LICENCE file.\n */\n\n'
-			},
-			dist: {
-				src: [
+        concat:{
+            options:{
+                // remove license headers
+                stripBanners:true,
+                banner:'/**\n' +
+                    ' * Copyright (c) 2014, Ilija Lazarevic ' +
+                    '<ikac.ikax@gmail.com> \n' +
+                    ' * This file is licensed under the MIT Licence\n' +
+                    ' * See the LICENCE file.\n */\n\n'
+            },
+            app:{
+                src:[
                     'app/app.js',
                     'app/articles/ArticlesController.js',
                     'app/feeds/FeedsController.js',
                     'app/folders/FoldersController.js',
                     'app/login/LoginController.js',
                     'app/menu/MenuController.js',
-                    'app/modules/*.js',
                     'app/directives/**/*.js',
                     '!app/**/*Spec.js'
-				],
-				dest: '<%= meta.production %>app.js'
-			}
-		},
+                ],
+                dest:'<%= meta.build %>/app.js'
+            },
+            modules:{
+                src:[
+                    'app/modules/*.js',
+                    '!app/modules/*Spec.js'
+                ],
+                dest:'<%= meta.build %>/modules.js'
+            }
+        },
 
-		wrap: {
-			app: {
-				src: ['<%= meta.production %>app.js'],
-				dest: '',
-				wrapper: [
-					'(function(angular, $, undefined){\n\n\'use strict;\'\n',
-					'\n})(window.angular, jQuery);'
-				]
-			}
-		},
+        uglify: {
+            options: {
+                stripBanners:true,
+                banner:'/**\n' +
+                    ' * Copyright (c) 2014, Ilija Lazarevic ' +
+                    '<ikac.ikax@gmail.com> \n' +
+                    ' * This file is licensed under the MIT Licence\n' +
+                    ' * See the LICENCE file.\n */\n\n',
+//                wrap: true,
+                mangle: true
+            },
+            app: {
+                files: {
+                    '<%= meta.build %>/app.min.js' : [
+                        'app/app.js',
+                        'app/articles/ArticlesController.js',
+                        'app/feeds/FeedsController.js',
+                        'app/folders/FoldersController.js',
+                        'app/login/LoginController.js',
+                        'app/menu/MenuController.js',
+                        'app/directives/dock/nwrFloatPalette.js',
+                        'app/directives/nwrOpenLink.js'
+                    ],
+                    '<%= meta.build %>/modules.min.js': [
+                        'app/modules/owncloud.js'
+                    ]
+                }
+            }
+        },
 
-		jshint: {
-			files: [
-				'Gruntfile.js',
-				'app/**/*.js',
-				'tests/**/*.js'
+        wrap:{
+            app:{
+                src:['<%= meta.build %>/app.js'],
+                dest:'',
+                options:{
+                    wrapper:[
+                        '(function(angular, $, undefined){\n\'use strict;\'\n',
+                        '\n})(window.angular, jQuery);'
+                    ]
+                }
+            },
+            modules:{
+                src:['<%= meta.build %>/modules.js'],
+                dest:'',
+                options:{
+                    wrapper:[
+                        '(function(angular, $, undefined){\n\'use strict;\'\n',
+                        '\n})(window.angular, jQuery);'
+                    ]
+                }
+            }
+        },
+
+        clean:{
+            web:[
+                '<%= meta.web %>/*'
             ],
-			options: {
-				// options here to override JSHint defaults
-				globals: {
-					console: true
-				}
-			}
-		},
+            jsfiles:[
+                '<%= meta.build %>/*.js'
+            ]
+        },
 
-		watch: {
-			// this watches for changes in the app directory and runs the concat
-			// and wrap tasks if something changed
-			concat: {
-				files: [
+        mkdir:{
+            web:{
+                options:{
+                    mode:0755,
+                    create:[
+                        '<%= meta.web %>',
+                        '<%= meta.web %>/css',
+                        '<%= meta.web %>/images',
+                        '<%= meta.web %>/partials',
+                        '<%= meta.web %>/js',
+                        '<%= meta.web %>/js/lib'
+                    ]
+                }
+            }
+        },
+
+        copy:{
+            debug:{
+                files:[
+                    // COPY NOT MINIFIED JS LIBRARIES FILES
+                    {
+                        expand:true,
+                        cwd:'lib/',
+                        src:[
+                            'angular/angular.js',
+                            'angular-bindonce/bindonce.js',
+                            'angular-sanitize/angular-sanitize.js',
+                            'angular-route/angular-route.js',
+                            'bootstrap/dist/js/bootstrap.js',
+                            'angular-local-storage/angular-local-storage.js',
+                            'jquery/dist/jquery.js'
+                        ],
+                        dest:'<%= meta.web %>/js/lib/'
+                    },
+                    // COPY APPLICATION AND MODULES JS FILES
+                    {
+                        expand:true,
+                        cwd:'build/',
+                        src:[
+                            'app.js',
+                            'modules.js'
+                        ],
+                        dest:'<%= meta.web %>/js/'
+                    },
+                    // COPY IMAGES FILES
+                    {
+                        expand:true,
+                        cwd:'images',
+                        src:'*',
+                        dest:'<%= meta.web %>/images/'
+                    },
+                    // COPY TWEAK CSS FILE
+                    {
+                        expand:true,
+                        cwd:'css/',
+                        src:'tweak.css',
+                        dest:'<%= meta.web %>/css/'
+                    },
+                    // COPY NOT MINIFIED CSS LIBRARIES FILES
+                    {
+                        expand:true,
+                        cwd:'lib/',
+                        src:[
+                            'bootstrap/dist/css/bootstrap.css',
+                            'bootstrap/dist/fonts/*',
+                            'normalize-css/normalize.css'
+                        ],
+                        dest:'<%= meta.web %>/css/'
+                    },
+                    {
+                        expand:true,
+                        cwd: 'app/',
+                        src: [
+                            'articles/articles.html',
+                            'directives/dock/palette.html',
+                            'feeds/feeds.html',
+                            'folders/folders.html',
+                            'login/login.html',
+                            'menu/menu.html'
+                        ],
+                        dest: '<%= meta.web %>/partials/',
+                        flatten: true
+                    }
+                ]
+            },
+            web: {
+                files: [
+                    {
+                        expand:true,
+                        cwd:'lib/',
+                        src:[
+                            'angular/angular.min.js',
+                            'angular-bindonce/bindonce.min.js',
+                            'angular-sanitize/angular-sanitize.min.js',
+                            'angular-route/angular-route.min.js',
+                            'bootstrap/dist/js/bootstrap.min.js',
+                            'angular-local-storage/angular-local-storage.min.js',
+                            'jquery/dist/jquery.min.js'
+                        ],
+                        dest:'<%= meta.web %>/js/lib/'
+                    },
+                    // COPY APPLICATION AND MODULES JS FILES
+                    {
+                        expand:true,
+                        cwd:'build/',
+                        src:[
+                            'app.min.js',
+                            'modules.min.js'
+                        ],
+                        dest:'<%= meta.web %>/js/'
+                    },
+                    // COPY IMAGES FILES
+                    {
+                        expand:true,
+                        cwd:'images',
+                        src:'*',
+                        dest:'<%= meta.web %>/images/'
+                    },
+                    // COPY TWEAK CSS FILE
+                    {
+                        expand:true,
+                        cwd:'css/',
+                        src:'tweak.css',
+                        dest:'<%= meta.web %>/css/'
+                    },
+                    // COPY NOT MINIFIED CSS LIBRARIES FILES
+                    {
+                        expand:true,
+                        cwd:'lib/',
+                        src:[
+                            'bootstrap/dist/css/bootstrap.min.css',
+                            'bootstrap/dist/fonts/*',
+                            'normalize-css/normalize.css'
+                        ],
+                        dest:'<%= meta.web %>/css/'
+                    },
+                    {
+                        expand:true,
+                        cwd: 'app/',
+                        src: [
+                            'articles/articles.html',
+                            'directives/dock/palette.html',
+                            'feeds/feeds.html',
+                            'folders/folders.html',
+                            'login/login.html',
+                            'menu/menu.html'
+                        ],
+                        dest: '<%= meta.web %>/partials/',
+                        flatten: true
+                    }
+                ]
+            }
+        },
+
+        preprocess:{
+            debug:{
+                options:{
+                    context:{
+                        DEBUG:true
+                    }
+                },
+                files:{
+                    '<%= meta.web %>/index.html':'index.html'
+                }
+            },
+            web:{
+                options:{
+                    context:{
+                        WEB:true
+                    }
+                },
+                files:{
+                    '<%= meta.web %>/index.html':'index.html'
+                }
+            }
+        },
+
+        jshint:{
+            files:[
+                'Gruntfile.js',
+                'app/**/*.js',
+                'tests/**/*.js'
+            ],
+            options:{
+                // options here to override JSHint defaults
+                globals:{
+                    console:true
+                }
+            }
+        },
+
+        watch:{
+            // this watches for changes in the app directory and runs the concat
+            // and wrap tasks if something changed
+            concat:{
+                files:[
                     'app/**/*.js',
                     'app/**/*.html',
                     'css/*.css',
                     'Gruntfile.js'
-				],
-				tasks: ['build']
-			}
-		},
+                ],
+                tasks:['debug']
+            }
+        }
 
-		testacular: {
-			unit: {
-				configFile: 'tests/config/testacular.js'
-			},
-			continuous: {
-				configFile: 'tests/config/testacular.js',
-				singleRun: true,
-				browsers: ['PhantomJS'],
-				reporters: ['progress', 'junit'],
-				junitReporter: {
-					outputFile: 'test-results.xml'
-				}
-			}
-		}
+    });
 
-	});
+    // make tasks available under simpler commands
+    //grunt.registerTask('build', ['jshint', 'concat', 'wrap']);
 
-	// make tasks available under simpler commands
-	grunt.registerTask('build', ['jshint', 'concat', 'wrap']);
-	grunt.registerTask('watchjs', ['watch:concat']);
-	grunt.registerTask('ci', ['testacular:continuous']);
-	grunt.registerTask('testjs', ['testacular:unit']);
-//    grunt.registerTask('firefoxos', ['clean:firefoxos_assets','clean:firefoxos_archive','copy:assets','compress','copy:archive','clean:firefoxos_archive']);
+    grunt.registerTask('debug',
+        [
+            'jshint',
+            'clean:web',
+            'clean:jsfiles',
+            'mkdir:web',
+            'concat',
+            'wrap',
+            'preprocess:debug',
+            'copy:debug',
+            'clean:jsfiles'
+        ]
+    );
 
+    grunt.registerTask('web',
+        [
+            'jshint',
+            'clean:web',
+            'clean:jsfiles',
+            'mkdir:web',
+            'uglify',
+            'wrap',
+            'preprocess:web',
+            'copy:web',
+            'clean:jsfiles'
+        ]
+    );
+
+    //grunt.registerTask('watchjs', ['watch:concat']);
 };
