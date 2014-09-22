@@ -1,7 +1,4 @@
-newsreader
-==========
-
-# OwnCloud News reader
+# News reader (now only for OwnCloud)
 
 ## Idea
 
