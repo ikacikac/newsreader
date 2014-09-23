@@ -1,10 +1,11 @@
-<ul bindonce class="list-group">
-    <li class="list-group-item media" data-ng-repeat="feed in feeds">
+<script type="text/ng-template" id="partials/feeds.tpl">
+    <ul bindonce class="list-group">
+        <li class="list-group-item media" data-ng-repeat="feed in feeds">
 
             <a class="pull-left" bo-href="'#/feed/'+feed.id+'/articles'">
                 <img class="media-object" bo-src="feed.faviconLink" alt="favicon">
             </a>
-        <!--<a data-ng-href="#/feed/{{feed.id}}/articles">-->
+            <!--<a data-ng-href="#/feed/{{feed.id}}/articles">-->
             <div class="media-body">
                 <h4 class="media-heading" bo-bind="feed.title"></h4>
 
@@ -16,8 +17,9 @@
                 </div>
 
             </div>
-        <!--</a>-->
-    </li>
-</ul>
+            <!--</a>-->
+        </li>
+    </ul>
 
-<br/>
+    <br/>
+</script>

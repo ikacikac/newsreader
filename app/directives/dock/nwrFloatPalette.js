@@ -22,12 +22,12 @@
  * SOFTWARE.
  */
 
-angular.module('newsreader').directive('nwrFloatPalette', function ($document) {
+angular.module('newsreader').directive('nwrFloatPalette', function () {
 
     return {
         restrict:'A',
         replace:true,
-        templateUrl:'partials/palette.html',
+        templateUrl:'partials/palette.tpl',
         link:function (scope, element, attrs) {
             scope.scrollToTop = function () {
                 var html = angular.element(document.querySelector('html'));

@@ -45,16 +45,15 @@ module.exports = function (grunt) {
         },
 
         concat:{
-            options:{
-                // remove license headers
-                stripBanners:true,
-                banner:'/**\n' +
-                    ' * Copyright (c) 2014, Ilija Lazarevic ' +
-                    '<ikac.ikax@gmail.com> \n' +
-                    ' * This file is licensed under the MIT Licence\n' +
-                    ' * See the LICENCE file.\n */\n\n'
-            },
             app:{
+                options:{
+                    stripBanners:true,
+                    banner:'/**\n' +
+                        ' * Copyright (c) 2014, Ilija Lazarevic ' +
+                        '<ikac.ikax@gmail.com> \n' +
+                        ' * This file is licensed under the MIT Licence\n' +
+                        ' * See the LICENCE file.\n */\n\n'
+                },
                 src:[
                     'app/app.js',
                     'app/articles/ArticlesController.js',
@@ -68,11 +67,26 @@ module.exports = function (grunt) {
                 dest:'<%= meta.build %>/app.js'
             },
             modules:{
+                options:{
+                    stripBanners:true,
+                    banner:'/**\n' +
+                        ' * Copyright (c) 2014, Ilija Lazarevic ' +
+                        '<ikac.ikax@gmail.com> \n' +
+                        ' * This file is licensed under the MIT Licence\n' +
+                        ' * See the LICENCE file.\n */\n\n'
+                },
                 src:[
                     'app/modules/*.js',
                     '!app/modules/*Spec.js'
                 ],
                 dest:'<%= meta.build %>/modules.js'
+            },
+            partials: {
+                options:{
+                    stripBanners:true
+                },
+                src: 'app/**/*.html',
+                dest: '<%= meta.web %>/partials/partials.tpl'
             }
         },
 
@@ -139,6 +153,19 @@ module.exports = function (grunt) {
         },
 
         mkdir:{
+            init: {
+                options:{
+                    mode: 0755,
+                    create: [
+                        '<%= meta.build %>',
+                        '<%= meta.build %>/android',
+                        '<%= meta.build %>/chrome',
+                        '<%= meta.build %>/ffos',
+                        '<%= meta.web %>'
+                    ]
+                }
+            },
+
             web:{
                 options:{
                     mode:0755,
@@ -206,21 +233,22 @@ module.exports = function (grunt) {
                             'normalize-css/normalize.css'
                         ],
                         dest:'<%= meta.web %>/css/'
-                    },
-                    {
-                        expand:true,
-                        cwd: 'app/',
-                        src: [
-                            'articles/articles.html',
-                            'directives/dock/palette.html',
-                            'feeds/feeds.html',
-                            'folders/folders.html',
-                            'login/login.html',
-                            'menu/menu.html'
-                        ],
-                        dest: '<%= meta.web %>/partials/',
-                        flatten: true
                     }
+// ,
+//                    {
+//                        expand:true,
+//                        cwd: 'app/',
+//                        src: [
+//                            'articles/articles.html',
+//                            'directives/dock/palette.html',
+//                            'feeds/feeds.html',
+//                            'folders/folders.html',
+//                            'login/login.html',
+//                            'menu/menu.html'
+//                        ],
+//                        dest: '<%= meta.web %>/partials/',
+//                        flatten: true
+//                    }
                 ]
             },
             web: {
@@ -273,21 +301,22 @@ module.exports = function (grunt) {
                             'normalize-css/normalize.css'
                         ],
                         dest:'<%= meta.web %>/css/'
-                    },
-                    {
-                        expand:true,
-                        cwd: 'app/',
-                        src: [
-                            'articles/articles.html',
-                            'directives/dock/palette.html',
-                            'feeds/feeds.html',
-                            'folders/folders.html',
-                            'login/login.html',
-                            'menu/menu.html'
-                        ],
-                        dest: '<%= meta.web %>/partials/',
-                        flatten: true
                     }
+//                    ,
+//                    {
+//                        expand:true,
+//                        cwd: 'app/',
+//                        src: [
+//                            'articles/articles.html',
+//                            'directives/dock/palette.html',
+//                            'feeds/feeds.html',
+//                            'folders/folders.html',
+//                            'login/login.html',
+//                            'menu/menu.html'
+//                        ],
+//                        dest: '<%= meta.web %>/partials/',
+//                        flatten: true
+//                    }
                 ]
             }
         },
@@ -348,6 +377,8 @@ module.exports = function (grunt) {
     // make tasks available under simpler commands
     //grunt.registerTask('build', ['jshint', 'concat', 'wrap']);
 
+    grunt.registerTask('init', ['mkdir:init']);
+
     grunt.registerTask('debug',
         [
             'jshint',
@@ -369,12 +400,11 @@ module.exports = function (grunt) {
             'clean:jsfiles',
             'mkdir:web',
             'uglify',
+            'concat:partials',
             'wrap',
             'preprocess:web',
             'copy:web',
             'clean:jsfiles'
         ]
     );
-
-    //grunt.registerTask('watchjs', ['watch:concat']);
 };

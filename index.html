@@ -27,14 +27,14 @@
         <link rel="stylesheet" href="css/bootstrap/dist/css/bootstrap.min.css" type="text/css">
         <!-- @endif -->
         <link rel="stylesheet" href="css/tweak.css" type="text/css">
+
     </head>
     <body>
         <div data-ng-controller="MenuCtrl">
 
-            <div data-ng-include="'partials/menu.html'"></div>
+            <div data-ng-include="'partials/menu.tpl'"></div>
 
             <div id="all" data-ng-class="{hidee:!toShow.menu, slide:toShow.menu}">
-
                 <nav data-ng-if="toShow.header" class="navbar navbar-default" role="navigation">
                     <div class="container-fluid">
                         <div class="navbar-header">
@@ -44,7 +44,6 @@
                         </div>
                     </div>
                 </nav>
-
                 <div class="container-fluid">
                     <div data-ng-view></div>
                 </div>

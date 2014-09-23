@@ -27,7 +27,7 @@ angular.module('newsreader', ['ngRoute', 'ngSanitize', 'owncloud', 'pasvaz.bindo
 angular.module('newsreader').config(['$routeProvider', function ($routeProvider) {
     $routeProvider.when('/articles/all', {
         controller:'ArticlesCtrl',
-        templateUrl:'partials/articles.html',
+        templateUrl:'partials/articles.tpl',
         resolve:{
             type:function () {
                 return 'all';
@@ -35,7 +35,7 @@ angular.module('newsreader').config(['$routeProvider', function ($routeProvider)
         }
     }).when('/articles/star', {
         controller:'ArticlesCtrl',
-        templateUrl:'partials/articles.html',
+        templateUrl:'partials/articles.tpl',
         resolve:{
             type:function () {
                 return 'star';
@@ -43,13 +43,13 @@ angular.module('newsreader').config(['$routeProvider', function ($routeProvider)
         }
     }).when('/folders', {
         controller:'FoldersCtrl',
-        templateUrl:'partials/folders.html'
+        templateUrl:'partials/folders.tpl'
     }).when('/feeds', {
         controller:'FeedsCtrl',
-        templateUrl:'partials/feeds.html'
+        templateUrl:'partials/feeds.tpl'
     }).when('/folder/:id/articles', {
         controller:'ArticlesCtrl',
-        templateUrl:'partials/articles.html',
+        templateUrl:'partials/articles.tpl',
         resolve:{
             type:function () {
                 return 'folder';
@@ -57,7 +57,7 @@ angular.module('newsreader').config(['$routeProvider', function ($routeProvider)
         }
     }).when('/feed/:id/articles', {
         controller:'ArticlesCtrl',
-        templateUrl:'partials/articles.html',
+        templateUrl:'partials/articles.tpl',
         resolve:{
             type:function () {
                 return 'feed';
@@ -65,9 +65,46 @@ angular.module('newsreader').config(['$routeProvider', function ($routeProvider)
         }
     }).when('/login',{
         controller: 'LoginCtrl',
-        templateUrl: 'partials/login.html'
+        templateUrl: 'partials/login.tpl'
     })
     .otherwise({
         redirectTo:'/articles/all'
     });
+}]);
+
+angular.module('newsreader').factory('$templateCache',['$cacheFactory', '$http', '$injector', function($cacheFactory, $http, $injector) {
+    var cache = $cacheFactory('templates');
+    var allTplPromise;
+
+    return {
+        get: function(url) {
+            var fromCache = cache.get(url);
+
+            // already have required template in the cache
+            if (fromCache) {
+                return fromCache;
+            }
+
+            // first template request ever - get the all tpl file
+            if (!allTplPromise) {
+                allTplPromise = $http.get('partials/partials.tpl').then(function(response) {
+                    // compile the response, which will put stuff into the cache
+                    $injector.get('$compile')(response.data);
+                    return response;
+                });
+            }
+
+            // return the all-tpl promise to all template requests
+            return allTplPromise.then(function(response) {
+                return {
+                    status: response.status,
+                    data: cache.get(url)
+                };
+            });
+        },
+
+        put: function(key, value) {
+            cache.put(key, value);
+        }
+    };
 }]);

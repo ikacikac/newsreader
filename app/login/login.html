@@ -1,36 +1,38 @@
-<div class="row">
-    <div class="col-sm-3 col-xs-1 col-md-4"></div>
-    <div class="col-sm-6 col-xs-10 col-md-4 form-dialog">
-        <form role="form" name="loginForm">
-            <fieldset>
+<script type="text/ng-template" id="partials/login.tpl">
+    <div class="row">
+        <div class="col-sm-3 col-xs-1 col-md-4"></div>
+        <div class="col-sm-6 col-xs-10 col-md-4 form-dialog">
+            <form role="form" name="loginForm">
+                <fieldset>
 
-                <div class="form-group">
-                    <label for="userName">User name:</label>
-                    <input id="userName" class="form-control" placeholder="User name" type="text"
-                           data-ng-model="userName">
+                    <div class="form-group">
+                        <label for="userName">User name:</label>
+                        <input id="userName" class="form-control" placeholder="User name" type="text"
+                               data-ng-model="userName">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password">Password:</label>
+                        <input id="password" class="form-control" placeholder="Password" type="password"
+                               data-ng-model="password">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="hostName">Host name:</label>
+                        <input id="hostName" class="form-control" placeholder="Host name e.g. http://example.com"
+                               type="text" data-ng-model="hostName">
+                    </div>
+                </fieldset>
+
+                <div data-ng-show="showAlert" class="alert alert-danger" role="alert" data-ng-bind="alertMessage"></div>
+
+                <div class="btn-group btn-group-justified">
+                    <div class="btn-group">
+                        <button class="btn btn-primary" data-ng-click="login()">Login</button>
+                    </div>
                 </div>
-
-                <div class="form-group">
-                    <label for="password">Password:</label>
-                    <input id="password" class="form-control" placeholder="Password" type="password"
-                           data-ng-model="password">
-                </div>
-
-                <div class="form-group">
-                    <label for="hostName">Host name:</label>
-                    <input id="hostName" class="form-control" placeholder="Host name e.g. http://example.com"
-                           type="text" data-ng-model="hostName">
-                </div>
-            </fieldset>
-
-            <div data-ng-show="showAlert" class="alert alert-danger" role="alert" data-ng-bind="alertMessage"></div>
-
-            <div class="btn-group btn-group-justified">
-                <div class="btn-group">
-                    <button class="btn btn-primary" data-ng-click="login()">Login</button>
-                </div>
-            </div>
-        </form>
+            </form>
+        </div>
+        <div class="col-sd-3 col-xs-1 col-md-4"></div>
     </div>
-    <div class="col-sd-3 col-xs-1 col-md-4"></div>
-</div>
+</script>

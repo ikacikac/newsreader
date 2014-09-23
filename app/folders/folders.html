@@ -1,4 +1,5 @@
-<ul bindonce class="list-group">
+<script type="text/ng-template" id="partials/folders.tpl">
+    <ul bindonce class="list-group">
     <li href="#" class="list-group-item media" data-ng-repeat="folder in folders">
         <a class="pull-left" bo-href="'#/folder/'+folder.id+'/articles'">
         <img class="media-object" src="images/folder.png" alt="folder">
@@ -9,3 +10,4 @@
     </li>
 </ul>
 <br/>
+</script>
