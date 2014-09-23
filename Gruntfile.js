@@ -40,8 +40,10 @@ module.exports = function (grunt) {
             pkg:grunt.file.readJSON('package.json'),
             version:'<%= meta.pkg.version %>',
             name:'<%= meta.pkg.name %>',
+            description:'<%= meta.pkg.description %>',
             build:'build',
-            web:'build/web'
+            web:'build/web',
+            chrome:'build/chrome'
         },
 
         concat:{
@@ -149,6 +151,9 @@ module.exports = function (grunt) {
             ],
             jsfiles:[
                 '<%= meta.build %>/*.js'
+            ],
+            chrome: [
+                '<%= meta.chrome %>/*'
             ]
         },
 
@@ -318,6 +323,28 @@ module.exports = function (grunt) {
 //                        flatten: true
 //                    }
                 ]
+            },
+            chrome: {
+                files: [
+                    {
+                        expand: true,
+                        cwd: '<%= meta.web %>/',
+                        src: [
+                            'css/**',
+                            'images/**',
+                            'js/**',
+                            'partials/**'
+                        ],
+                        dest: '<%= meta.chrome %>'
+                    },
+                    {
+                        src: [
+                            'css/angular-csp.css',
+                            'background.js'
+                        ],
+                        dest: '<%= meta.chrome %>/'
+                    }
+                ]
             }
         },
 
@@ -340,6 +367,20 @@ module.exports = function (grunt) {
                 },
                 files:{
                     '<%= meta.web %>/index.html':'index.html'
+                }
+            },
+            chrome: {
+                options : {
+                   context: {
+                       CHROME: true,
+                       VERSION : '<%= meta.pkg.version %>',
+                       NAME : '<%= meta.pkg.name %>',
+                       DESCRIPTION : '<%= meta.pkg.description %>'
+                   }
+                },
+                files: {
+                    '<%= meta.chrome %>/index.html': 'index.html',
+                    '<%= meta.chrome %>/manifest.json' : 'manifest.json.tpl'
                 }
             }
         },
@@ -405,6 +446,15 @@ module.exports = function (grunt) {
             'preprocess:web',
             'copy:web',
             'clean:jsfiles'
+        ]
+    );
+
+    grunt.registerTask('chrome',
+        [
+            'web',
+            'clean:chrome',
+            'preprocess:chrome',
+            'copy:chrome'
         ]
     );
 };
