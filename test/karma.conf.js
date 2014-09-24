@@ -25,12 +25,12 @@ module.exports = function (config) {
             'lib/angular-local-storage/angular-local-storage.js',
             'app/app.js',
             'app/**/*.js'
-
         ],
 
 
         // list of files to exclude
         exclude:[
+            'app/modules/owncloud/run-chrome.js'
         ],
 
 

@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2014 Ilija Lazarevic
+ * Copyright (c) 9/23/14 Ilija Lazarevic
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,47 +22,6 @@
  * SOFTWARE.
  */
 
-angular.module('owncloud', ['LocalStorageModule']);
-
-angular.module('owncloud').config(['$httpProvider', '$provide', function ($httpProvider, $provide) {
-    $provide.factory('AuthInterceptor', ['UserSettings', '$q', function (UserSettings, $q) {
-        return {
-            request:function (config) {
-//                    console.log(config.url);
-                // only set auth headers if url matches the api url
-                if (config.url.indexOf(UserSettings.hostName) === 0) {
-                    var auth = btoa(UserSettings.userName + ':' + UserSettings.password);
-                    config.headers.Authorization = 'Basic ' + auth;
-                }
-                return config || $q.when(config);
-            }
-        };
-    }]);
-    $httpProvider.interceptors.push('AuthInterceptor');
-}]);
-
-angular.module('owncloud').run(['$rootScope', '$location', 'UserSettings', 'localStorageService', function ($rootScope, $location, UserSettings, localStorageService) {
-
-    UserSettings.userName = localStorageService.get('userName');
-    UserSettings.password = localStorageService.get('password');
-    UserSettings.hostName = localStorageService.get('hostName');
-
-    $rootScope.$on('$routeChangeStart', function (event, currRoute, prevRoute) {
-        if (!UserSettings.loggedIn) {
-            $location.path('/login');
-        }
-    });
-
-    $rootScope.$on('$routeChangeSuccess', function (event, currRoute, prevRoute) {
-        if ($location.path() !== '/login') {
-            //console.log('save the login data!');
-            localStorageService.set('userName', UserSettings.userName);
-            localStorageService.set('password', UserSettings.password);
-            localStorageService.set('hostName', UserSettings.hostName);
-        }
-    });
-
-}]);
 
 angular.module('owncloud').service('OwnCloudSettings', [function () {
     return {

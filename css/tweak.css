@@ -21,6 +21,9 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+html, body {
+    overflow-y:  auto;
+}
 
 #article.selected {
     border-left: 5px solid #333333;
@@ -157,5 +160,5 @@
 .float-button.show {
     position: fixed;
     bottom: 60px;
-    right: 50px;
+    right: 10px;
 }

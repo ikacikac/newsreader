@@ -47,15 +47,10 @@ module.exports = function (grunt) {
         },
 
         concat:{
+            options: {
+                stripBanners: true
+            },
             app:{
-                options:{
-                    stripBanners:true,
-                    banner:'/**\n' +
-                        ' * Copyright (c) 2014, Ilija Lazarevic ' +
-                        '<ikac.ikax@gmail.com> \n' +
-                        ' * This file is licensed under the MIT Licence\n' +
-                        ' * See the LICENCE file.\n */\n\n'
-                },
                 src:[
                     'app/app.js',
                     'app/articles/ArticlesController.js',
@@ -68,27 +63,32 @@ module.exports = function (grunt) {
                 ],
                 dest:'<%= meta.build %>/app.js'
             },
-            modules:{
-                options:{
-                    stripBanners:true,
-                    banner:'/**\n' +
-                        ' * Copyright (c) 2014, Ilija Lazarevic ' +
-                        '<ikac.ikax@gmail.com> \n' +
-                        ' * This file is licensed under the MIT Licence\n' +
-                        ' * See the LICENCE file.\n */\n\n'
-                },
+            modulesweb:{
                 src:[
-                    'app/modules/*.js',
+                    'app/modules/owncloud/config.js',
+                    'app/modules/owncloud/run.js',
+                    'app/modules/owncloud/services.js',
                     '!app/modules/*Spec.js'
                 ],
                 dest:'<%= meta.build %>/modules.js'
+            },
+            moduleschrome: {
+                options: {
+                    stripBanners:true
+                },
+                src: [
+                    'app/modules/owncloud/config.js',
+                    'app/modules/owncloud/run-chrome.js',
+                    'app/modules/owncloud/services.js'
+                ],
+                dest: '<%= meta.build %>/modules.js'
             },
             partials: {
                 options:{
                     stripBanners:true
                 },
                 src: 'app/**/*.html',
-                dest: '<%= meta.web %>/partials/partials.tpl'
+                dest: '<%= meta.build %>/partials.tpl'
             }
         },
 
@@ -105,18 +105,20 @@ module.exports = function (grunt) {
             },
             app: {
                 files: {
-                    '<%= meta.build %>/app.min.js' : [
-                        'app/app.js',
-                        'app/articles/ArticlesController.js',
-                        'app/feeds/FeedsController.js',
-                        'app/folders/FoldersController.js',
-                        'app/login/LoginController.js',
-                        'app/menu/MenuController.js',
-                        'app/directives/dock/nwrFloatPalette.js',
-                        'app/directives/nwrOpenLink.js'
-                    ],
+                    '<%= meta.build %>/app.min.js' : '<%= meta.build %>/app.js'
+                }
+            },
+            modulesweb: {
+                files: {
                     '<%= meta.build %>/modules.min.js': [
-                        'app/modules/owncloud.js'
+                        '<%= meta.build %>/modules.js'
+                    ]
+                }
+            },
+            moduleschrome: {
+                files: {
+                    '<%= meta.build %>/modules.min.js': [
+                        '<%= meta.build %>/modules.js'
                     ]
                 }
             }
@@ -149,11 +151,12 @@ module.exports = function (grunt) {
             web:[
                 '<%= meta.web %>/*'
             ],
-            jsfiles:[
-                '<%= meta.build %>/*.js'
-            ],
             chrome: [
                 '<%= meta.chrome %>/*'
+            ],
+            buildfiles:[
+                '<%= meta.build %>/*.js',
+                '<%= meta.build %>/*.tpl'
             ]
         },
 
@@ -163,10 +166,10 @@ module.exports = function (grunt) {
                     mode: 0755,
                     create: [
                         '<%= meta.build %>',
+                        '<%= meta.web %>',
+                        '<%= meta.chrome %>',
                         '<%= meta.build %>/android',
-                        '<%= meta.build %>/chrome',
-                        '<%= meta.build %>/ffos',
-                        '<%= meta.web %>'
+                        '<%= meta.build %>/ffos'
                     ]
                 }
             },
@@ -181,6 +184,20 @@ module.exports = function (grunt) {
                         '<%= meta.web %>/partials',
                         '<%= meta.web %>/js',
                         '<%= meta.web %>/js/lib'
+                    ]
+                }
+            },
+
+            chrome: {
+                options: {
+                    mode: 0755,
+                    create:[
+                        '<%= meta.chrome %>',
+                        '<%= meta.chrome %>/css',
+                        '<%= meta.chrome %>/images',
+                        '<%= meta.chrome %>/partials',
+                        '<%= meta.chrome %>/js',
+                        '<%= meta.chrome %>/js/lib'
                     ]
                 }
             }
@@ -239,21 +256,6 @@ module.exports = function (grunt) {
                         ],
                         dest:'<%= meta.web %>/css/'
                     }
-// ,
-//                    {
-//                        expand:true,
-//                        cwd: 'app/',
-//                        src: [
-//                            'articles/articles.html',
-//                            'directives/dock/palette.html',
-//                            'feeds/feeds.html',
-//                            'folders/folders.html',
-//                            'login/login.html',
-//                            'menu/menu.html'
-//                        ],
-//                        dest: '<%= meta.web %>/partials/',
-//                        flatten: true
-//                    }
                 ]
             },
             web: {
@@ -306,43 +308,81 @@ module.exports = function (grunt) {
                             'normalize-css/normalize.css'
                         ],
                         dest:'<%= meta.web %>/css/'
+                    },
+                    // COPY PARTIALS
+                    {
+                        expand: true,
+                        cwd: '<%= meta.build %>',
+                        src: 'partials.tpl',
+                        dest: '<%= meta.web %>/partials/'
                     }
-//                    ,
-//                    {
-//                        expand:true,
-//                        cwd: 'app/',
-//                        src: [
-//                            'articles/articles.html',
-//                            'directives/dock/palette.html',
-//                            'feeds/feeds.html',
-//                            'folders/folders.html',
-//                            'login/login.html',
-//                            'menu/menu.html'
-//                        ],
-//                        dest: '<%= meta.web %>/partials/',
-//                        flatten: true
-//                    }
                 ]
             },
             chrome: {
                 files: [
                     {
-                        expand: true,
-                        cwd: '<%= meta.web %>/',
-                        src: [
-                            'css/**',
-                            'images/**',
-                            'js/**',
-                            'partials/**'
+                        expand:true,
+                        cwd:'lib/',
+                        src:[
+                            'angular/angular.min.js',
+                            'angular-bindonce/bindonce.min.js',
+                            'angular-sanitize/angular-sanitize.min.js',
+                            'angular-route/angular-route.min.js',
+                            'bootstrap/dist/js/bootstrap.min.js',
+                            'angular-local-storage/angular-local-storage.min.js',
+                            'jquery/dist/jquery.min.js'
                         ],
-                        dest: '<%= meta.chrome %>'
+                        dest:'<%= meta.chrome %>/js/lib/'
                     },
+                    // COPY APPLICATION AND MODULES JS FILES
                     {
-                        src: [
-                            'css/angular-csp.css',
-                            'background.js'
+                        expand:true,
+                        cwd:'build/',
+                        src:[
+                            'app.min.js',
+                            'modules.min.js'
                         ],
+                        dest:'<%= meta.chrome %>/js/'
+                    },
+                    // COPY IMAGES FILES
+                    {
+                        expand:true,
+                        cwd:'images',
+                        src:'*',
+                        dest:'<%= meta.chrome %>/images/'
+                    },
+                    // COPY TWEAK CSS FILES
+                    {
+                        expand: true,
+                        cwd: 'css/',
+                        src: [
+                            'angular-csp.css',
+                            'tweak.css'
+                        ],
+                        dest: '<%= meta.chrome %>/css/'
+                    },
+                    // COPY NOT MINIFIED CSS LIBRARIES FILES
+                    {
+                        expand:true,
+                        cwd:'lib/',
+                        src:[
+                            'bootstrap/dist/css/bootstrap.min.css',
+                            'bootstrap/dist/fonts/*',
+                            'normalize-css/normalize.css'
+                        ],
+                        dest:'<%= meta.chrome %>/css/'
+                    },
+                    // COPY BACKGROUND SCRIPT
+                    {
+                        src: 'background.js',
                         dest: '<%= meta.chrome %>/'
+                    },
+                    // COPY PARTIALS
+                    {
+                        expand: true,
+                        cwd: '<%= meta.build %>',
+                        src: 'partials.tpl',
+                        dest: '<%= meta.chrome %>/partials/'
                     }
                 ]
             }
@@ -380,7 +420,7 @@ module.exports = function (grunt) {
                 },
                 files: {
                     '<%= meta.chrome %>/index.html': 'index.html',
-                    '<%= meta.chrome %>/manifest.json' : 'manifest.json.tpl'
+                    '<%= meta.chrome %>/manifest.json' : 'manifest.js'
                 }
             }
         },
@@ -426,7 +466,9 @@ module.exports = function (grunt) {
             'clean:web',
             'clean:jsfiles',
             'mkdir:web',
-            'concat',
+            'concat:app',
+            'concat:modules',
+            'concat:partials',
             'wrap',
             'preprocess:debug',
             'copy:debug',
@@ -438,23 +480,33 @@ module.exports = function (grunt) {
         [
             'jshint',
             'clean:web',
-            'clean:jsfiles',
             'mkdir:web',
-            'uglify',
+            'concat:app',
+            'concat:modulesweb',
             'concat:partials',
+            'uglify:app',
+            'uglify:modulesweb',
             'wrap',
             'preprocess:web',
             'copy:web',
-            'clean:jsfiles'
+            'clean:buildfiles'
         ]
     );
 
     grunt.registerTask('chrome',
         [
-            'web',
-            'clean:chrome',
+            'jshint',
+            'clean:chrome', // clean build/chrome directory
+            'mkdir:chrome',
+            'concat:app',
+            'concat:moduleschrome',
+            'concat:partials',
+            'uglify:app',
+            'uglify:moduleschrome',
+            'wrap',
             'preprocess:chrome',
-            'copy:chrome'
+            'copy:chrome',
+            'clean:buildfiles'
         ]
     );
 };

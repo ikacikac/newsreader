@@ -108,3 +108,9 @@ angular.module('newsreader').factory('$templateCache',['$cacheFactory', '$http',
         }
     };
 }]);
+
+angular.module('newsreader').config( ['$compileProvider', function( $compileProvider ){
+        $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|chrome-extension|blob:chrome-extension):/);
+        $compileProvider.imgSrcSanitizationWhitelist(/^\s*(https?|ftp|mailto|chrome-extension|blob:chrome-extension):/);
+        // Angular before v1.2 uses $compileProvider.urlSanitizationWhitelist(...)
+    }]);
