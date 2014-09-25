@@ -1,7 +1,4 @@
 <!DOCTYPE html>
-<!-- @ifdef DEBUG -->
-<html lang="en" data-ng-app="newsreader">
-<!-- @endif-->
 <!-- @ifdef WEB -->
 <html lang="en" data-ng-app="newsreader">
 <!-- @endif-->
@@ -11,27 +8,21 @@
     <head>
         <meta charset="UTF-8">
         <title>News Reader</title>
-        <meta name="author" content="Ilija Lazarevic">
-        <meta name="description" content="RSS reader">
-        <meta name="keywords" content="RSS, atom, feed, reader">
+        <meta name="author" content="<!-- @echo AUTHOR -->">
+        <meta name="description" content="<!-- @echo DESCRIPTION -->">
+        <meta name="keywords" content="<!-- @echo KEYWORDS -->">
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
         <link rel="stylesheet" href="css/normalize-css/normalize.css" type="text/css">
 
-        <!-- @ifdef DEBUG -->
         <!--<link rel="shortcut icon" href="favicon.ico" type="image/vnd.microsoft.icon">-->
         <!--<link rel='stylesheet' href='//fonts.googleapis.com/css?family=font1|font2|etc' type='text/css'>-->
-        <link rel="stylesheet" href="css/bootstrap/dist/css/bootstrap.css" type="text/css">
-        <!-- @endif -->
-        <!-- @ifdef WEB -->
+
         <link rel="stylesheet" href="css/bootstrap/dist/css/bootstrap.min.css" type="text/css">
-        <!-- @endif -->
         <!-- @ifdef CHROME -->
-        <link rel="stylesheet" href="css/bootstrap/dist/css/bootstrap.min.css" type="text/css">
         <link rel="stylesheet" href="css/angular-csp.css" type="text/css">
         <!-- @endif -->
         <link rel="stylesheet" href="css/tweak.css" type="text/css">
-
     </head>
     <body>
         <div data-ng-controller="MenuCtrl">
@@ -53,18 +44,7 @@
                 </div>
             </div>
         </div>
-        <!-- @ifdef DEBUG -->
-        <script type="text/javascript" src="js/lib/jquery/dist/jquery.js"></script>
-        <script type="text/javascript" src="js/lib/angular/angular.js"></script>
-        <script type="text/javascript" src="js/lib/angular-bindonce/bindonce.js"></script>
-        <script type="text/javascript" src="js/lib/angular-sanitize/angular-sanitize.js"></script>
-        <script type="text/javascript" src="js/lib/angular-route/angular-route.js"></script>
-        <script type="text/javascript" src="js/lib/bootstrap/dist/js/bootstrap.js"></script>
-        <script type="text/javascript" src="js/lib/angular-local-storage/angular-local-storage.js"></script>
-        <script type="text/javascript" src="js/modules.js"></script>
-        <script type="text/javascript" src="js/app.js"></script>
-        <!-- @endif -->
-        <!-- @ifdef WEB -->
+        <!-- @ifdef MINJS -->
         <script type="text/javascript" src="js/lib/jquery/dist/jquery.min.js"></script>
         <script type="text/javascript" src="js/lib/angular/angular.min.js"></script>
         <script type="text/javascript" src="js/lib/angular-bindonce/bindonce.min.js"></script>
@@ -75,16 +55,9 @@
         <script type="text/javascript" src="js/modules.min.js"></script>
         <script type="text/javascript" src="js/app.min.js"></script>
         <!-- @endif -->
-        <!-- @ifdef CHROME -->
-        <script type="text/javascript" src="js/lib/jquery/dist/jquery.min.js"></script>
-        <script type="text/javascript" src="js/lib/angular/angular.min.js"></script>
-        <script type="text/javascript" src="js/lib/angular-bindonce/bindonce.min.js"></script>
-        <script type="text/javascript" src="js/lib/angular-sanitize/angular-sanitize.min.js"></script>
-        <script type="text/javascript" src="js/lib/angular-route/angular-route.min.js"></script>
-        <script type="text/javascript" src="js/lib/bootstrap/dist/js/bootstrap.min.js"></script>
-        <script type="text/javascript" src="js/lib/angular-local-storage/angular-local-storage.min.js"></script>
-        <script type="text/javascript" src="js/modules.min.js"></script>
-        <script type="text/javascript" src="js/app.min.js"></script>
+
+        <!-- @ifdef CORDOVA -->
+        <script type="text/javascript" src="cordova.js"></script>
         <!-- @endif -->
     </body>
 </html>

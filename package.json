@@ -13,9 +13,10 @@
     "feed"
   ],
   "author": "Ilija Lazarevic",
-  "license": "BSD",
+  "license": "MIT",
   "devDependencies": {
     "bower": "^1.3.9",
+    "cordova": "^3.6.3-0.2.13",
     "grunt": "^0.4.5",
     "grunt-cli": "^0.1.13",
     "grunt-contrib-clean": "^0.6.0",
@@ -24,6 +25,7 @@
     "grunt-contrib-jshint": "^0.10.0",
     "grunt-contrib-uglify": "^0.6.0",
     "grunt-contrib-watch": "^0.6.1",
+    "grunt-cordovacli": "^0.4.0",
     "grunt-mkdir": "^0.1.2",
     "grunt-preprocess": "^4.0.0",
     "grunt-wrap": "^0.3.0",

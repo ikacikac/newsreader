@@ -54,6 +54,12 @@ describe('Menu Controller unit test:', function () {
         expect(scope.toShow.menu).toBe(false);
     });
 
+    it('goTo method should change location', function() {
+        $location.path('');
+        scope.goTo('/articles/star');
+        expect($location.path()).toBe('/articles/star');
+    });
+
     describe('$locationChangeSuccess should have been emitted and ', function () {
 
         it('variable header is unchanged on /login path', function () {

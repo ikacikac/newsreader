@@ -21,8 +21,10 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+
 html, body {
-    overflow-y:  auto;
+    overflow-y: auto; /* this one enables scrolling in google chrome extension*/
+    overflow-x: hidden; /* this one puts scroll bar, caused by the upper style, at the bottom of the page */
 }
 
 #article.selected {

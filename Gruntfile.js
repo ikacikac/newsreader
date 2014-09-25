@@ -34,13 +34,18 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-preprocess');
     grunt.loadNpmTasks('grunt-mkdir');
     grunt.loadNpmTasks('grunt-wrap');
+    grunt.loadNpmTasks('grunt-cordovacli');
 
     grunt.initConfig({
         meta:{
             pkg:grunt.file.readJSON('package.json'),
+
             version:'<%= meta.pkg.version %>',
             name:'<%= meta.pkg.name %>',
+            author:'<%= meta.pkg.author %>',
             description:'<%= meta.pkg.description %>',
+            keyword: '<%= meta.pkg.keywords %>',
+
             build:'build',
             web:'build/web',
             chrome:'build/chrome'
@@ -157,6 +162,12 @@ module.exports = function (grunt) {
             buildfiles:[
                 '<%= meta.build %>/*.js',
                 '<%= meta.build %>/*.tpl'
+            ],
+            build: [
+                '<%= meta.build %>'
+            ],
+            cordovawww: [
+                '<%= meta.build %>/cordova/www/**/*'
             ]
         },
 
@@ -167,9 +178,7 @@ module.exports = function (grunt) {
                     create: [
                         '<%= meta.build %>',
                         '<%= meta.web %>',
-                        '<%= meta.chrome %>',
-                        '<%= meta.build %>/android',
-                        '<%= meta.build %>/ffos'
+                        '<%= meta.chrome %>'
                     ]
                 }
             },
@@ -385,6 +394,13 @@ module.exports = function (grunt) {
                         dest: '<%= meta.chrome %>/partials/'
                     }
                 ]
+            },
+            cordova: {
+                expand: true,
+                cwd: '<%= meta.web %>',
+//                src: grunt.file.expand('**/*'),
+                src: ['*.*', '**/*.*'],
+                dest: '<%= meta.build %>/cordova/www/'
             }
         },
 
@@ -402,7 +418,12 @@ module.exports = function (grunt) {
             web:{
                 options:{
                     context:{
-                        WEB:true
+                        WEB:true,
+                        AUTHOR: '<%= meta.author %>',
+                        NAME : '<%= meta.pkg.name %>',
+                        DESCRIPTION : '<%= meta.pkg.description %>',
+                        KEYWORDS : '<%= meta.pkg.keywords %>',
+                        MINJS: true
                     }
                 },
                 files:{
@@ -415,12 +436,44 @@ module.exports = function (grunt) {
                        CHROME: true,
                        VERSION : '<%= meta.pkg.version %>',
                        NAME : '<%= meta.pkg.name %>',
-                       DESCRIPTION : '<%= meta.pkg.description %>'
+                       DESCRIPTION : '<%= meta.pkg.description %>',
+                       MINJS: true
                    }
                 },
                 files: {
                     '<%= meta.chrome %>/index.html': 'index.html',
                     '<%= meta.chrome %>/manifest.json' : 'manifest.js'
+                }
+            },
+            cordova: {
+                options: {
+                    context: {
+                        WEB : true,
+                        MINJS: true,
+                        CORDOVA: true,
+                        AUTHOR: '<%= meta.pkg.author %>',
+                        NAME : '<%= meta.pkg.name %>',
+                        DESCRIPTION : '<%= meta.pkg.description %>',
+                        VERSION: '<%= meta.pkg.version %>'
+                    }
+                },
+                files: {
+                    '<%= meta.build %>/cordova/www/index.html': 'index.html',
+                    '<%= meta.build %>/cordova/config.xml': 'config.xml',
+                    '<%= meta.build %>/cordova/www/cordova-apprun.js': 'cordova-apprun.js'
+                }
+            }
+        },
+
+        cordovacli: {
+            cordova: {
+                options: {
+                    command: ['create','platform','plugin'],
+                    platforms: ['android'],
+                    plugins: ['inappbrowser'],
+                    path: 'build/cordova/',
+                    id: 'com.app.newsreader',
+                    name: '<%= meta.pkg.name %>'
                 }
             }
         },
@@ -509,4 +562,6 @@ module.exports = function (grunt) {
             'clean:buildfiles'
         ]
     );
+
+    grunt.registerTask('cordova', ['web','clean:cordovawww','copy:cordova','preprocess:cordova']);
 };

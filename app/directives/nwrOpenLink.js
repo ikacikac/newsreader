@@ -27,7 +27,11 @@ angular.module('newsreader').directive('nwrOpenLink', ['$window', function($wind
         restrict:'A',
         link:function (scope, element, attributes) {
             scope.openUrl = function (url) {
-                $window.open(url, "_system");
+                // using 'location=no' as last argument forces web application
+                // to open link in new window and not new tab. That is why it is
+                // not included
+                $window.open(url, '_system');
+
             };
 
             scope.$on('$destroy', function(){

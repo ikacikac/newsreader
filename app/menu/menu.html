@@ -1,23 +1,23 @@
-<script type="text/ng-template" id="partials/menu.tpl">
+<script type="text/ng-template" id="partials/menu.tpl" xmlns="http://www.w3.org/1999/html">
     <div id="menuleft" data-ng-class="{hidee:!toShow.menu, slide:toShow.menu}">
         <div class="container-fluid">
             <div class="hidden-xs">
                 <h2>Menu</h2>
                 <ul class="nav nav-pills nav-stacked">
-                    <li><a data-ng-href="#/articles/all">All articles</a></li>
-                    <li><a data-ng-href="#/articles/star">Starred articles</a></li>
-                    <li><a data-ng-href="#/folders">Folders</a></li>
-                    <li><a data-ng-href="#/feeds">Feeds</a></li>
+                    <li><a data-ng-click="goTo('/articles/all')">All articles</a></li>
+                    <li><a data-ng-click="goTo('/articles/star')">Starred articles</a></li>
+                    <li><a data-ng-click="goTo('/folders')">Folders</a></li>
+                    <li><a data-ng-click="goTo('/feeds')">Feeds</a></li>
                     <li><a data-ng-click="hideMenu()">Hide menu</a></li>
                 </ul>
             </div>
 
             <div class="visible-xs-block">
                 <ul class="nav nav-pills nav-stacked nav-justified">
-                    <li><a data-ng-href="#/articles/all">All</a></li>
-                    <li><a data-ng-href="#/articles/star">Starred</a></li>
-                    <li><a data-ng-href="#/folders">Folders</a></li>
-                    <li><a data-ng-href="#/feeds">Feeds</a></li>
+                    <li><a data-ng-click="goTo('/articles/all')">All</a></li>
+                    <li><a data-ng-click="goTo('/articles/star')">Starred</a></li>
+                    <li><a data-ng-click="goTo('/folders')">Folders</a></li>
+                    <li><a data-ng-click="goTo('/feeds')">Feeds</a></li>
                     <li><a data-ng-click="hideMenu()">Hide</a></li>
                 </ul>
             </div>
