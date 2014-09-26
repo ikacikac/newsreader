@@ -55,9 +55,11 @@ describe('Menu Controller unit test:', function () {
     });
 
     it('goTo method should change location', function() {
+        scope.toShow.menu = true;
         $location.path('');
         scope.goTo('/articles/star');
         expect($location.path()).toBe('/articles/star');
+        expect(scope.toShow.menu).toBeFalsy();
     });
 
     describe('$locationChangeSuccess should have been emitted and ', function () {

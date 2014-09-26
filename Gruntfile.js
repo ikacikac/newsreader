@@ -31,6 +31,7 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-copy');
     grunt.loadNpmTasks('grunt-contrib-clean');
     grunt.loadNpmTasks('grunt-contrib-uglify');
+    grunt.loadNpmTasks('grunt-contrib-compress');
     grunt.loadNpmTasks('grunt-preprocess');
     grunt.loadNpmTasks('grunt-mkdir');
     grunt.loadNpmTasks('grunt-wrap');
@@ -44,16 +45,17 @@ module.exports = function (grunt) {
             name:'<%= meta.pkg.name %>',
             author:'<%= meta.pkg.author %>',
             description:'<%= meta.pkg.description %>',
-            keyword: '<%= meta.pkg.keywords %>',
+            keyword:'<%= meta.pkg.keywords %>',
 
             build:'build',
             web:'build/web',
-            chrome:'build/chrome'
+            chrome:'build/chrome',
+            firefoxos:'build/firefoxos'
         },
 
         concat:{
-            options: {
-                stripBanners: true
+            options:{
+                stripBanners:true
             },
             app:{
                 src:[
@@ -77,28 +79,28 @@ module.exports = function (grunt) {
                 ],
                 dest:'<%= meta.build %>/modules.js'
             },
-            moduleschrome: {
-                options: {
+            moduleschrome:{
+                options:{
                     stripBanners:true
                 },
-                src: [
+                src:[
                     'app/modules/owncloud/config.js',
                     'app/modules/owncloud/run-chrome.js',
                     'app/modules/owncloud/services.js'
                 ],
-                dest: '<%= meta.build %>/modules.js'
+                dest:'<%= meta.build %>/modules.js'
             },
-            partials: {
+            partials:{
                 options:{
                     stripBanners:true
                 },
-                src: 'app/**/*.html',
-                dest: '<%= meta.build %>/partials.tpl'
+                src:'app/**/*.html',
+                dest:'<%= meta.build %>/partials.tpl'
             }
         },
 
-        uglify: {
-            options: {
+        uglify:{
+            options:{
                 stripBanners:true,
                 banner:'/**\n' +
                     ' * Copyright (c) 2014, Ilija Lazarevic ' +
@@ -106,23 +108,23 @@ module.exports = function (grunt) {
                     ' * This file is licensed under the MIT Licence\n' +
                     ' * See the LICENCE file.\n */\n\n',
 //                wrap: true,
-                mangle: true
+                mangle:true
             },
-            app: {
-                files: {
-                    '<%= meta.build %>/app.min.js' : '<%= meta.build %>/app.js'
+            app:{
+                files:{
+                    '<%= meta.build %>/app.min.js':'<%= meta.build %>/app.js'
                 }
             },
-            modulesweb: {
-                files: {
-                    '<%= meta.build %>/modules.min.js': [
+            modulesweb:{
+                files:{
+                    '<%= meta.build %>/modules.min.js':[
                         '<%= meta.build %>/modules.js'
                     ]
                 }
             },
-            moduleschrome: {
-                files: {
-                    '<%= meta.build %>/modules.min.js': [
+            moduleschrome:{
+                files:{
+                    '<%= meta.build %>/modules.min.js':[
                         '<%= meta.build %>/modules.js'
                     ]
                 }
@@ -156,26 +158,29 @@ module.exports = function (grunt) {
             web:[
                 '<%= meta.web %>/*'
             ],
-            chrome: [
+            chrome:[
                 '<%= meta.chrome %>/*'
             ],
             buildfiles:[
                 '<%= meta.build %>/*.js',
                 '<%= meta.build %>/*.tpl'
             ],
-            build: [
+            build:[
                 '<%= meta.build %>'
             ],
-            cordovawww: [
+            cordovawww:[
                 '<%= meta.build %>/cordova/www/**/*'
+            ],
+            firefoxos:[
+                '<%= meta.firefoxos %>'
             ]
         },
 
         mkdir:{
-            init: {
+            init:{
                 options:{
-                    mode: 0755,
-                    create: [
+                    mode:0755,
+                    create:[
                         '<%= meta.build %>',
                         '<%= meta.web %>',
                         '<%= meta.chrome %>'
@@ -197,9 +202,9 @@ module.exports = function (grunt) {
                 }
             },
 
-            chrome: {
-                options: {
-                    mode: 0755,
+            chrome:{
+                options:{
+                    mode:0755,
                     create:[
                         '<%= meta.chrome %>',
                         '<%= meta.chrome %>/css',
@@ -207,6 +212,16 @@ module.exports = function (grunt) {
                         '<%= meta.chrome %>/partials',
                         '<%= meta.chrome %>/js',
                         '<%= meta.chrome %>/js/lib'
+                    ]
+                }
+            },
+
+            firefoxos:{
+                options:{
+                    mode:0755,
+                    create:[
+                        '<%= meta.firefoxos %>',
+                        '<%= meta.firefoxos %>/www'
                     ]
                 }
             }
@@ -267,8 +282,8 @@ module.exports = function (grunt) {
                     }
                 ]
             },
-            web: {
-                files: [
+            web:{
+                files:[
                     {
                         expand:true,
                         cwd:'lib/',
@@ -320,15 +335,15 @@ module.exports = function (grunt) {
                     },
                     // COPY PARTIALS
                     {
-                        expand: true,
-                        cwd: '<%= meta.build %>',
-                        src: 'partials.tpl',
-                        dest: '<%= meta.web %>/partials/'
+                        expand:true,
+                        cwd:'<%= meta.build %>',
+                        src:'partials.tpl',
+                        dest:'<%= meta.web %>/partials/'
                     }
                 ]
             },
-            chrome: {
-                files: [
+            chrome:{
+                files:[
                     {
                         expand:true,
                         cwd:'lib/',
@@ -362,13 +377,13 @@ module.exports = function (grunt) {
                     },
                     // COPY TWEAK CSS FILES
                     {
-                        expand: true,
-                        cwd: 'css/',
-                        src: [
+                        expand:true,
+                        cwd:'css/',
+                        src:[
                             'angular-csp.css',
                             'tweak.css'
                         ],
-                        dest: '<%= meta.chrome %>/css/'
+                        dest:'<%= meta.chrome %>/css/'
                     },
                     // COPY NOT MINIFIED CSS LIBRARIES FILES
                     {
@@ -383,24 +398,29 @@ module.exports = function (grunt) {
                     },
                     // COPY BACKGROUND SCRIPT
                     {
-                        src: 'background.js',
-                        dest: '<%= meta.chrome %>/'
+                        src:'background.js',
+                        dest:'<%= meta.chrome %>/'
                     },
                     // COPY PARTIALS
                     {
-                        expand: true,
-                        cwd: '<%= meta.build %>',
-                        src: 'partials.tpl',
-                        dest: '<%= meta.chrome %>/partials/'
+                        expand:true,
+                        cwd:'<%= meta.build %>',
+                        src:'partials.tpl',
+                        dest:'<%= meta.chrome %>/partials/'
                     }
                 ]
             },
-            cordova: {
-                expand: true,
-                cwd: '<%= meta.web %>',
-//                src: grunt.file.expand('**/*'),
-                src: ['*.*', '**/*.*'],
-                dest: '<%= meta.build %>/cordova/www/'
+            cordova:{
+                expand:true,
+                cwd:'<%= meta.web %>',
+                src:['*.*', '**/*.*'],
+                dest:'<%= meta.build %>/cordova/www/'
+            },
+            firefoxos:{
+                expand:true,
+                cwd:'<%= meta.web %>/',
+                src:['*.*', '**/*.*'],
+                dest:'<%= meta.firefoxos %>/www/'
             }
         },
 
@@ -419,61 +439,77 @@ module.exports = function (grunt) {
                 options:{
                     context:{
                         WEB:true,
-                        AUTHOR: '<%= meta.author %>',
-                        NAME : '<%= meta.pkg.name %>',
-                        DESCRIPTION : '<%= meta.pkg.description %>',
-                        KEYWORDS : '<%= meta.pkg.keywords %>',
-                        MINJS: true
+                        AUTHOR:'<%= meta.author %>',
+                        NAME:'<%= meta.pkg.name %>',
+                        DESCRIPTION:'<%= meta.pkg.description %>',
+                        KEYWORDS:'<%= meta.pkg.keywords %>',
+                        MINJS:true
                     }
                 },
                 files:{
                     '<%= meta.web %>/index.html':'index.html'
                 }
             },
-            chrome: {
-                options : {
-                   context: {
-                       CHROME: true,
-                       VERSION : '<%= meta.pkg.version %>',
-                       NAME : '<%= meta.pkg.name %>',
-                       DESCRIPTION : '<%= meta.pkg.description %>',
-                       MINJS: true
-                   }
-                },
-                files: {
-                    '<%= meta.chrome %>/index.html': 'index.html',
-                    '<%= meta.chrome %>/manifest.json' : 'manifest.js'
-                }
-            },
-            cordova: {
-                options: {
-                    context: {
-                        WEB : true,
-                        MINJS: true,
-                        CORDOVA: true,
-                        AUTHOR: '<%= meta.pkg.author %>',
-                        NAME : '<%= meta.pkg.name %>',
-                        DESCRIPTION : '<%= meta.pkg.description %>',
-                        VERSION: '<%= meta.pkg.version %>'
+            chrome:{
+                options:{
+                    context:{
+                        CSP:true,
+                        VERSION:'<%= meta.pkg.version %>',
+                        NAME:'<%= meta.pkg.name %>',
+                        DESCRIPTION:'<%= meta.pkg.description %>',
+                        MINJS:true
                     }
                 },
-                files: {
-                    '<%= meta.build %>/cordova/www/index.html': 'index.html',
-                    '<%= meta.build %>/cordova/config.xml': 'config.xml',
-                    '<%= meta.build %>/cordova/www/cordova-apprun.js': 'cordova-apprun.js'
+                files:{
+                    '<%= meta.chrome %>/index.html':'index.html',
+                    '<%= meta.chrome %>/manifest.json':'manifest.js'
+                }
+            },
+            cordova:{
+                options:{
+                    context:{
+                        WEB:true,
+                        MINJS:true,
+                        CORDOVA:true,
+                        AUTHOR:'<%= meta.pkg.author %>',
+                        NAME:'<%= meta.pkg.name %>',
+                        DESCRIPTION:'<%= meta.pkg.description %>',
+                        VERSION:'<%= meta.pkg.version %>'
+                    }
+                },
+                files:{
+                    '<%= meta.build %>/cordova/www/index.html':'index.html',
+                    '<%= meta.build %>/cordova/config.xml':'config.xml'
                 }
             }
         },
 
-        cordovacli: {
-            cordova: {
+        compress: {
+            firefoxos: {
                 options: {
-                    command: ['create','platform','plugin'],
-                    platforms: ['android'],
-                    plugins: ['inappbrowser'],
-                    path: 'build/cordova/',
-                    id: 'com.app.newsreader',
-                    name: '<%= meta.pkg.name %>'
+                    archive: '<%= meta.firefoxos %>/package.zip'
+                },
+                files: [
+                    {
+                        expand: true,
+                        cwd: '<%= meta.firefoxos %>/www',
+                        src: ['**'],
+                        dest: '',
+                        flattne: true
+                    }
+                ]
+            }
+        },
+
+        cordovacli:{
+            cordova:{
+                options:{
+                    command:['create', 'platform', 'plugin'],
+                    platforms:['android'],
+                    plugins: ['org.apache.cordova.inappbrowser'],
+                    path:'build/cordova/',
+                    id:'com.app.newsreader',
+                    name:'<%= meta.pkg.name %>'
                 }
             }
         },
@@ -508,8 +544,35 @@ module.exports = function (grunt) {
 
     });
 
-    // make tasks available under simpler commands
-    //grunt.registerTask('build', ['jshint', 'concat', 'wrap']);
+    grunt.registerTask('firefoxosmanifest', function (key, value) {
+        var config = grunt.config('meta');
+        var projectFile = config.firefoxos + '/www/manifest.webapp';
+
+        if (!grunt.file.exists(projectFile)) {
+            grunt.log.error("file " + projectFile + " not found");
+            grunt.log.writeln("creating " + projectFile + "file");
+        }
+
+        var manifest = {
+            "launch_path":"/" + config.pkg.main,
+            "installs_allowed_from":[
+                "*"
+            ],
+            "version":config.pkg.version,
+            "name":config.pkg.name,
+            "description":config.pkg.description,
+            "developer":{
+                "name":config.pkg.author,
+                "url":config.pkg.url
+            },
+            "icons":{
+                "60":"/images/document.png",
+                "128":"/images/document.png"
+            }
+        };
+
+        grunt.file.write(projectFile, JSON.stringify(manifest, null, 2));
+    });
 
     grunt.registerTask('init', ['mkdir:init']);
 
@@ -563,5 +626,7 @@ module.exports = function (grunt) {
         ]
     );
 
-    grunt.registerTask('cordova', ['web','clean:cordovawww','copy:cordova','preprocess:cordova']);
+    grunt.registerTask('cordova', ['clean:cordovawww', 'web', 'copy:cordova', 'preprocess:cordova']);
+
+    grunt.registerTask('firefoxos', ['clean:firefoxos', 'mkdir:firefoxos', 'web', 'copy:firefoxos', 'firefoxosmanifest']);
 };

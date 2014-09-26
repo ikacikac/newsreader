@@ -25,11 +25,13 @@ Tools used for project are:
 
 For now, application can be builded for Chrome, Android and FirefoxOS. Steps for building application for each of menitioned platforms will be given in following section. Of course, there is the simplest thing and that is web application.
 
-Directory which is used for building is not part of repository. Because of that you have to run `grunt mkdir:init` for initial folder structure where builds will be stored.
+Directory which is used for building is not part of repository. Because of that you have to run `grunt mkdir:init` for initial folder structure where builds will be located.
 
 ### Web application
 
- This one has the simplest procedure. After making initial folder structure for builds, you have to run `grunt web`. Grunt will do concatenation, minificiation, wrapping and copying files where they should be. After that you can run web server in `/build/web/` directory. If you are using Linux you should have permission to run `python -m SimpleHTTPServer 9000`. After that open `http://localhost:9000/` in browser and voila, behold the amazing application!!
+After making initial folder structure for builds, you have to run `grunt web`. Grunt will do concatenation, minificiation, wrapping and copying files. After that you can run web server in `/build/web/` directory.
+
+If you are using Linux you should have permission to run `python -m SimpleHTTPServer 9000`. After that open `http://localhost:9000/` in browser and voila, behold the amazing application!!
 
 ### Chrome application
 
@@ -42,8 +44,8 @@ Thats it!
 
 Run `grunt cordovacli` for initializing cordova folder structure.
 After that go to `/build/cordova/`.
-Run `grunt cordova` which will build version for cordova. That one can be used for every platform.
-Then `cordova build android` and `cordova run android`.
+Run `grunt cordova` which will build version for cordova.
+Then run `cordova build android` and `cordova run android`.
 
 Before running last command, make sure that you have connected your device or that you have installed Android SDK and setup emulator.
 

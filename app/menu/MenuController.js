@@ -72,6 +72,7 @@ angular.module('newsreader').controller('MenuCtrl', ['$scope', '$location', 'Own
 
     $scope.goTo = function(url){
         $location.path(url);
+        $scope.hideMenu();
     };
 
     $scope.$on('$destroy', function () {
