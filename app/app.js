@@ -114,3 +114,8 @@ angular.module('newsreader').config( ['$compileProvider', function( $compileProv
         $compileProvider.imgSrcSanitizationWhitelist(/^\s*(https?|ftp|mailto|chrome-extension|blob:chrome-extension):/);
         // Angular before v1.2 uses $compileProvider.urlSanitizationWhitelist(...)
     }]);
+
+
+angular.module('newsreader').run(function() {
+    FastClick.attach(document.body);
+});

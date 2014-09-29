@@ -112,9 +112,9 @@ html, body {
 }
 
 .slide, .hidee {
-    transition: left 0.4s ease;
-    -webkit-transition: left 0.4s ease;
-    -moz-transition: left 0.4s ease;
+    transition: left 0.4s linear;
+    -webkit-transition: left 0.4s linear;
+    -moz-transition: left 0.4s linear;
 }
 
 @media (max-width : 768px) {

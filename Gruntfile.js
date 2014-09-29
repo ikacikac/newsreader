@@ -128,6 +128,11 @@ module.exports = function (grunt) {
                         '<%= meta.build %>/modules.js'
                     ]
                 }
+            },
+            fastclick:{
+                files:{
+                    'lib/fastclick/lib/fastclick.min.js':'lib/fastclick/lib/fastclick.js'
+                }
             }
         },
 
@@ -294,7 +299,8 @@ module.exports = function (grunt) {
                             'angular-route/angular-route.min.js',
                             'bootstrap/dist/js/bootstrap.min.js',
                             'angular-local-storage/angular-local-storage.min.js',
-                            'jquery/dist/jquery.min.js'
+                            'jquery/dist/jquery.min.js',
+                            'fastclick/lib/fastclick.min.js'
                         ],
                         dest:'<%= meta.web %>/js/lib/'
                     },
@@ -354,7 +360,8 @@ module.exports = function (grunt) {
                             'angular-route/angular-route.min.js',
                             'bootstrap/dist/js/bootstrap.min.js',
                             'angular-local-storage/angular-local-storage.min.js',
-                            'jquery/dist/jquery.min.js'
+                            'jquery/dist/jquery.min.js',
+                            'fastclick/lib/fastclick.min.js'
                         ],
                         dest:'<%= meta.chrome %>/js/lib/'
                     },
@@ -484,18 +491,18 @@ module.exports = function (grunt) {
             }
         },
 
-        compress: {
-            firefoxos: {
-                options: {
-                    archive: '<%= meta.firefoxos %>/package.zip'
+        compress:{
+            firefoxos:{
+                options:{
+                    archive:'<%= meta.firefoxos %>/package.zip'
                 },
-                files: [
+                files:[
                     {
-                        expand: true,
-                        cwd: '<%= meta.firefoxos %>/www',
-                        src: ['**'],
-                        dest: '',
-                        flattne: true
+                        expand:true,
+                        cwd:'<%= meta.firefoxos %>/www',
+                        src:['**'],
+                        dest:'',
+                        flattne:true
                     }
                 ]
             }
@@ -506,7 +513,7 @@ module.exports = function (grunt) {
                 options:{
                     command:['create', 'platform', 'plugin'],
                     platforms:['android'],
-                    plugins: ['org.apache.cordova.inappbrowser'],
+                    plugins:['org.apache.cordova.inappbrowser'],
                     path:'build/cordova/',
                     id:'com.app.newsreader',
                     name:'<%= meta.pkg.name %>'
@@ -629,4 +636,6 @@ module.exports = function (grunt) {
     grunt.registerTask('cordova', ['clean:cordovawww', 'web', 'copy:cordova', 'preprocess:cordova']);
 
     grunt.registerTask('firefoxos', ['clean:firefoxos', 'mkdir:firefoxos', 'web', 'copy:firefoxos', 'firefoxosmanifest']);
+
+    grunt.registerTask('uglifyFastClick', ['fastclick']);
 };
