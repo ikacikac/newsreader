@@ -23,24 +23,44 @@ Tools used for project are:
 
 ## Build application
 
-For now, application can be builded for Chrome, Android and FirefoxOS. Steps for building application for each of menitioned platforms will be given in following section. Of course, there is the simplest thing and that is web application.
+For now, application can be builded for Chrome, Android and FirefoxOS. Steps for building application for each of menitioned platforms will be given in following section. 
 
-Directory which is used for building is not part of repository. Because of that you have to run `grunt mkdir:init` for initial folder structure where builds will be located.
+You should have node.js installed on your system. Also, you first have to clone this repository with:
+
+`git clone https://github.com/ikacikac/newsreader.git newsreader`
+
+After positioning yourself in this newly created directory you have to install all tools needed for building. Do that by running 
+
+`npm install`
+
+After installing tools you have to setup initial build folder structure by running
+
+`grunt mkdir:init`
+
+Now you have all things needed for building application which is described in steps below.
 
 ### Web application
 
-After making initial folder structure for builds, you have to run `grunt web`. Grunt will do concatenation, minificiation, wrapping and copying files. After that you can run web server in `/build/web/` directory.
+Web application is builded by running 
+
+`grunt web`
+
+command, while in project directory.
+
+After that you can run web server in `/build/web/` directory.
 
 If you are using Linux you should have permission to run `python -m SimpleHTTPServer 9000`. After that open `http://localhost:9000/` in browser and voila, behold the amazing application!!
 
 ### Chrome application
 
-Run `grunt chrome` and after that go to `/build/chrome` directory.
+Run `grunt chrome` and after that go to `/build` directory.
 Run next command in console `chromium-browser --pack-extension=chrome/`. This will make a package and private key.
 Go to file browser and drag file to Chrome's extensions tab.
 Thats it!
 
 ### Android version
+
+!WARNING! Before building Android version of this application you have to download Android SDK and add path to it's tools to system PATH. That way you will be able to access `android` or `adb` tools.
 
 Run `grunt cordovacli` for initializing cordova folder structure.
 After that go to `/build/cordova/`.
@@ -48,6 +68,14 @@ Run `grunt cordova` which will build version for cordova.
 Then run `cordova build android` and `cordova run android`.
 
 Before running last command, make sure that you have connected your device or that you have installed Android SDK and setup emulator.
+
+### FirefoxOS version
+
+Building package for FirefoxOS is easy as running next command.
+
+`grunt firefoxos`
+
+After that you should have `build/firefoxos` directory and `package.zip` in it. Load that archive in Firefox App Manager and application will be installed on your device/simulator.
 
 ## Images licencing
 
