@@ -188,7 +188,8 @@ module.exports = function (grunt) {
                     create:[
                         '<%= meta.build %>',
                         '<%= meta.web %>',
-                        '<%= meta.chrome %>'
+                        '<%= meta.chrome %>',
+                        '<%= meta.firefoxos %>'
                     ]
                 }
             },
@@ -635,7 +636,7 @@ module.exports = function (grunt) {
 
     grunt.registerTask('cordova', ['clean:cordovawww', 'web', 'copy:cordova', 'preprocess:cordova']);
 
-    grunt.registerTask('firefoxos', ['clean:firefoxos', 'mkdir:firefoxos', 'web', 'copy:firefoxos', 'firefoxosmanifest']);
+    grunt.registerTask('firefoxos', ['clean:firefoxos', 'mkdir:firefoxos', 'web', 'copy:firefoxos', 'firefoxosmanifest', 'compress:firefoxos']);
 
     grunt.registerTask('uglifyFastClick', ['fastclick']);
 };
