@@ -54,8 +54,10 @@ If you are using Linux you should have permission to run `python -m SimpleHTTPSe
 ### Chrome application
 
 Run `grunt chrome` and after that go to `/build` directory.
+
 Run next command in console `chromium-browser --pack-extension=chrome/`. This will make a package and private key.
 Go to file browser and drag file to Chrome's extensions tab.
+
 Thats it!
 
 ### Android version
@@ -63,8 +65,11 @@ Thats it!
 !WARNING! Before building Android version of this application you have to download Android SDK and add path to it's tools to system PATH. That way you will be able to access `android` or `adb` tools.
 
 Run `grunt cordovacli` for initializing cordova folder structure.
+
 After that go to `/build/cordova/`.
+
 Run `grunt cordova` which will build version for cordova.
+
 Then run `cordova build android` and `cordova run android`.
 
 Before running last command, make sure that you have connected your device or that you have installed Android SDK and setup emulator.
